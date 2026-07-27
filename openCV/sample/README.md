@@ -6,10 +6,11 @@
 
 ```text
 第 0 周：环境 + 跑通第一个程序
-第 1 周：Mat / 颜色 / 绘图 / 滤波（01–05）
-第 2 周：边缘 / 形态学 / 轮廓 / 几何（06–09）
-第 3 周：特征匹配 + 图像对比（10 + DiffImg）
-之后：视频、相机标定、DNN、结合 ultralytics 做检测
+第 1 周：Mat / 颜色 / 绘图 / 滤波（01–05）入门
+第 2 周：边缘 / 形态学 / 轮廓 / 几何 / ORB（06–10）入门
+第 3 周：直方图 / 霍夫 / 模板 / 单应性 / 连通域 / 光流 / 背景（11–17）中级
+第 4 周：分水岭 / GrabCut / 拼接 / ArUco / 卡尔曼 / 文档扫描 / 立体 / 标定 / 修复（18–26）高级
+第 5 周：DiffImg + 真实摄像头 / DNN / 结合 ultralytics
 ```
 
 ### 配合阅读
@@ -43,7 +44,38 @@
 | 08 | `08_contour` | 轮廓、外接矩形、矩 | imgproc |
 | 09 | `09_geometry` | 缩放翻转仿射透视 | imgproc |
 | 10 | `10_feature_match` | ORB + BFMatcher | features2d |
-| 进阶 | `DiffImg` | SSIM / pHash / 相似度 | imgproc, features2d |
+
+### 中级（11–17）
+
+| Demo | 目录 | 知识点 | 对应模块 |
+|------|------|--------|----------|
+| 11 | `11_histogram` | 直方图、equalizeHist、CLAHE | imgproc |
+| 12 | `12_hough` | HoughLinesP / HoughCircles | imgproc |
+| 13 | `13_template_match` | matchTemplate、多尺度 | imgproc |
+| 14 | `14_homography` | ORB + findHomography 对齐 | features2d, calib3d |
+| 15 | `15_connected_components` | 连通域统计与过滤 | imgproc |
+| 16 | `16_optical_flow` | LK 稀疏 + Farneback 稠密光流 | video |
+| 17 | `17_bg_subtract` | MOG2 背景建模（合成视频） | video |
+
+### 高级（18–26）
+
+| Demo | 目录 | 知识点 | 对应模块 |
+|------|------|--------|----------|
+| 18 | `18_watershed` | 分水岭分割 | imgproc |
+| 19 | `19_grabcut` | GrabCut 前景提取 | imgproc |
+| 20 | `20_stitching` | Stitcher 全景拼接 | stitching |
+| 21 | `21_aruco` | ArUco 检测与位姿 | aruco, calib3d |
+| 22 | `22_kalman_track` | 卡尔曼滤波跟踪 | video |
+| 23 | `23_document_scan` | 文档四边形拉正流水线 | imgproc, calib3d |
+| 24 | `24_stereo_bm` | StereoBM 视差/深度 | calib3d |
+| 25 | `25_camera_calib` | 棋盘格相机标定 | calib3d |
+| 26 | `26_inpaint_clone` | inpaint + seamlessClone | photo |
+
+### 综合进阶
+
+| Demo | 目录 | 知识点 | 对应模块 |
+|------|------|--------|----------|
+| 工具 | `DiffImg` | SSIM / pHash / 相似度 | imgproc, features2d |
 
 ## 编译
 
@@ -56,7 +88,10 @@ cd /home/cp/work2/visualAlgo/openCV/sample
 chmod +x build.sh
 ./build.sh              # 配置并编译
 ./build.sh clean        # 清理后重编
-./build.sh run          # 编译并跑 01–10
+./build.sh run          # 入门 01–10
+./build.sh run-mid      # 中级 11–17
+./build.sh run-adv      # 高级 18–26
+./build.sh run-all      # 全部 01–26
 ./build.sh -j8
 ./build.sh --opencv-dir /path/to/lib/cmake/opencv4
 ./build.sh --debug
@@ -100,8 +135,11 @@ cd /home/cp/work2/visualAlgo/openCV/sample/build
 # 有显示器时弹窗
 ./bin/06_edge --show --canny_low=30 --canny_high=100
 
-# 一键跑 01–10
-cmake --build . --target run_all_demos
+# 一键跑
+cmake --build . --target run_beginner_demos   # 01-10
+cmake --build . --target run_mid_demos        # 11-17
+cmake --build . --target run_adv_demos        # 18-26
+cmake --build . --target run_all_demos        # 全部
 ```
 
 通用参数：
@@ -124,7 +162,12 @@ cmake --build . --target run_all_demos
 | Day 6 | `08`：过滤小轮廓，打印面积最大轮廓 |
 | Day 7 | `09`：改透视四点，做“文档拉正”实验 |
 | Day 8 | `10`：换两张相似图，看匹配数变化 |
-| Day 9+ | `DiffImg` + 阅读 `doc` 算法文档；尝试摄像头 `VideoCapture` |
+| Day 9–10 | 中级 `11`–`13`：直方图 / 霍夫 / 模板匹配 |
+| Day 11–12 | 中级 `14`–`15`：单应性对齐 / 连通域 |
+| Day 13–14 | 中级 `16`–`17`：光流 / 背景减除 |
+| Day 15–17 | 高级 `18`–`21`：分水岭 / GrabCut / 拼接 / ArUco |
+| Day 18–20 | 高级 `22`–`26`：卡尔曼 / 文档扫描 / 立体 / 标定 / 修复 |
+| Day 21+ | `DiffImg` + 摄像头 + DNN + `doc` 算法文档 |
 
 ## 摄像头小练习（可选，自写）
 
@@ -161,7 +204,9 @@ sample/
 ├── README.md                 # 本学习指南
 ├── CMakeLists.txt            # 统一构建
 ├── common/demo_utils.hpp     # 公共工具
-├── 01_hello_image/ … 10_feature_match/
-├── DiffImg/                  # 进阶图像对比
-└── output/                   # 运行产物（gitignore 可选）
+├── 01_hello_image/ … 10_feature_match/   # 入门
+├── 11_histogram/ … 17_bg_subtract/       # 中级
+├── 18_watershed/ … 26_inpaint_clone/     # 高级
+├── DiffImg/                              # 相似度工具
+└── output/                               # 运行产物
 ```

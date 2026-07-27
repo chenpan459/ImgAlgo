@@ -3,7 +3,10 @@
 # 用法:
 #   ./build.sh              # 配置并编译全部 demo
 #   ./build.sh clean        # 清理后重新编译
-#   ./build.sh run          # 编译并运行 01–10
+#   ./build.sh run          # 编译并运行 01–10（入门）
+#   ./build.sh run-mid      # 编译并运行 11–17（中级）
+#   ./build.sh run-adv      # 编译并运行 18–26（高级）
+#   ./build.sh run-all      # 编译并运行 01–26
 #   ./build.sh -j8          # 指定并行数
 #   ./build.sh --opencv-dir /path/to/lib/cmake/opencv4
 set -euo pipefail
@@ -13,12 +16,12 @@ BUILD_DIR="${ROOT}/build"
 JOBS="$(nproc 2>/dev/null || echo 4)"
 OPENCV_DIR="${OpenCV_DIR:-}"
 DO_CLEAN=0
-DO_RUN=0
+DO_RUN=""
 BUILD_TYPE="${CMAKE_BUILD_TYPE:-Release}"
 
 usage() {
     cat <<EOF
-Usage: $(basename "$0") [options] [clean|run]
+Usage: $(basename "$0") [options] [clean|run|run-mid|run-adv|run-all]
 
 Options:
   -j N                 parallel jobs (default: nproc)
@@ -29,7 +32,10 @@ Options:
 Commands:
   (none)               configure + build
   clean                remove build/ then configure + build
-  run                  build then run 01-10 demos (write to sample/output/)
+  run                  build then run beginner demos 01-10
+  run-mid              build then run intermediate demos 11-17
+  run-adv              build then run advanced demos 18-26
+  run-all              build then run 01-26
 EOF
 }
 
@@ -60,7 +66,19 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         run)
-            DO_RUN=1
+            DO_RUN="run_beginner_demos"
+            shift
+            ;;
+        run-mid)
+            DO_RUN="run_mid_demos"
+            shift
+            ;;
+        run-adv)
+            DO_RUN="run_adv_demos"
+            shift
+            ;;
+        run-all)
+            DO_RUN="run_all_demos"
             shift
             ;;
         *)
@@ -97,12 +115,14 @@ ls -1 "${BUILD_DIR}/bin" 2>/dev/null || true
 echo
 echo "Examples:"
 echo "  ${BUILD_DIR}/bin/01_hello_image --outdir ${ROOT}/output"
-echo "  ${BUILD_DIR}/bin/06_edge --image /path/to.jpg --show"
-echo "  cmake --build ${BUILD_DIR} --target run_all_demos"
+echo "  ${BUILD_DIR}/bin/12_hough --show"
+echo "  ./build.sh run-mid     # 中级 11-17"
+echo "  ./build.sh run-adv     # 高级 18-26"
+echo "  ./build.sh run-all     # 全部 01-26"
 
-if [[ "${DO_RUN}" -eq 1 ]]; then
+if [[ -n "${DO_RUN}" ]]; then
     echo
-    echo "[*] Running all beginner demos..."
-    cmake --build . --target run_all_demos
+    echo "[*] Running target: ${DO_RUN}"
+    cmake --build . --target "${DO_RUN}"
     echo "[*] Outputs: ${ROOT}/output/"
 fi
