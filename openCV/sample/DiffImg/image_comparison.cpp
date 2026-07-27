@@ -52,7 +52,7 @@ public:
     
     // 计算感知哈希 (pHash)
     string calculatePerceptualHash(const Mat& img) {
-        Mat resized, gray, dct;
+        Mat resized, gray, dctMat;
         
         // 调整大小到8x8
         resize(img, resized, Size(8, 8));
@@ -67,10 +67,10 @@ public:
         // 转换为浮点数并计算DCT
         Mat floatImg;
         gray.convertTo(floatImg, CV_32F);
-        dct(floatImg, dct);
+        cv::dct(floatImg, dctMat);
         
         // 取左上角8x8的DCT系数
-        Mat dctLowFreq = dct(Rect(0, 0, 8, 8));
+        Mat dctLowFreq = dctMat(Rect(0, 0, 8, 8));
         
         // 计算平均值（排除DC系数）
         Scalar meanVal = mean(dctLowFreq(Rect(1, 1, 7, 7)));
