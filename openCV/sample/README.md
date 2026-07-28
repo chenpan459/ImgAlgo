@@ -18,10 +18,11 @@
 | 顺序 | 材料 | 作用 |
 |------|------|------|
 | 1 | 本 README + 各 demo 源码头注释 | 动手主线 |
-| 2 | [`../doc/OpenCV_4.13.0_快速参考.md`](../doc/OpenCV_4.13.0_快速参考.md) | API 速查 |
-| 3 | [`../doc/OpenCV_4.13.0_代码结构分析.md`](../doc/OpenCV_4.13.0_代码结构分析.md) | 源码模块地图 |
-| 4 | [`../doc/OpenCV_4.13.0_图片算法详解.md`](../doc/OpenCV_4.13.0_图片算法详解.md) | 算法原理加深 |
-| 5 | 官方教程 https://docs.opencv.org/4.x/d9/df8/tutorial_root.html | 系统补强 |
+| 2 | [`各示例所需基础知识.md`](./各示例所需基础知识.md) | **每个例子的前置知识 / 前置 Demo** |
+| 3 | [`../doc/OpenCV_4.13.0_快速参考.md`](../doc/OpenCV_4.13.0_快速参考.md) | API 速查 |
+| 4 | [`../doc/OpenCV_4.13.0_代码结构分析.md`](../doc/OpenCV_4.13.0_代码结构分析.md) | 源码模块地图 |
+| 5 | [`../doc/OpenCV_4.13.0_图片算法详解.md`](../doc/OpenCV_4.13.0_图片算法详解.md) | 算法原理加深 |
+| 6 | 官方教程 https://docs.opencv.org/4.x/d9/df8/tutorial_root.html | 系统补强 |
 
 ### 学习原则
 
